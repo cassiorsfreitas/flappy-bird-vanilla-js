@@ -8,11 +8,11 @@
 }
 
 html {
-    height: 100%;
+    height: 90%;
 }
 
 body {
-    margin: 0;
+    margin: 0 auto;
     background-color: #0D262D;
     color: #fff;
     height: 100%;
@@ -22,5 +22,4 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100%;
 }
