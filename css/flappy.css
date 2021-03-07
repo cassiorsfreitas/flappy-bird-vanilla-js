@@ -61,5 +61,6 @@
     font-family: Pixel;
     font-size: 50px;
     font-weight: 700;
+    z-index: 1;
 }
 
