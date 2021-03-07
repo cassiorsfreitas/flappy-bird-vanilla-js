@@ -62,17 +62,50 @@ function BarriersPack(height, width, gap, distanceBetweenBarriers, notificationP
             }
 
             const middle = width / 2
-            const passedCenter = pair.getX() + pixelSpeed >= middle
-                && pair.getX() < middle
-            if (passedCenter) notificationPoint()
+            // const passedCenter = pair.getX() + pixelSpeed >= middle
+            //     && pair.getX() < middle
+            // if (passedCenter) notificationPoint()
         })        
     }
 }
 
+function Bird(heightGame) {
+    let flying = false
+
+    this.element = newElement('img', 'bird')
+    this.element.src = 'img/bird.png'
+
+    this.getY = () => parseInt(this.element.style.bottom.split('px')[0])
+    this.setY = y => this.element.style.bottom = `${y}px`
+
+    window.onkeydown = e => flying = true
+    window.onkeyup = e => flying = false
+
+    this.start = () => {
+        const newY = this.getY() + (flying ? 8 : -5)
+        const maxHeight = heightGame - this.element.clientHeight
+
+        if (newY <= 0) {
+            this.setY(0)
+        } else if (newY >= maxHeight) {
+            this.setY(440)
+        } else {
+            this.setY(newY)
+        }
+    }
+
+    this.setY(heightGame / 2)
+
+}
+
 const barriers = new BarriersPack(700, 1100, 400, 400)
+const bird = new Bird(500)
 const area = document.querySelector('[wm-flappy]')
+
+area.appendChild(bird.element)
 barriers.pairs.forEach(pair => area.appendChild(pair.element))
 setInterval(() => {
     barriers.start()
+    bird.start()
 }, 20)
 
