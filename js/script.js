@@ -88,7 +88,7 @@ function Bird(heightGame) {
         if (newY <= 0) {
             this.setY(0)
         } else if (newY >= maxHeight) {
-            this.setY(440)
+            this.setY(maxHeight)
         } else {
             this.setY(newY)
         }
