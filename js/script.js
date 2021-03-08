@@ -107,6 +107,33 @@ function Progress() {
     this.refreshPoints(0)
 }
 
+function checkPosition(elementA, elementB) {
+    const a = elementA.getBoundingClientRect()
+    const b = elementB.getBoundingClientRect()
+
+    const horizontal = a.left + a.width >= b.left
+        && b.left + b.width >= a.left
+    const vertical = a.top + a.height >= b.top
+        && b.top + b.height >= a.top
+
+    return horizontal && vertical
+}
+
+function collisionDetector(bird, barriers) {
+    let collision = false
+
+    barriers.pairs.forEach(pairOfBarriers => {
+        if(!collision) {
+            const upper = pairOfBarriers.upper.element
+            const lower = pairOfBarriers.lower.element
+            collision = checkPosition(bird.element, upper)
+                || checkPosition(bird.element, lower) 
+        }
+    })
+
+    return collision
+}
+
 function FlappyBird() {
     let points = 0
 
@@ -118,7 +145,7 @@ function FlappyBird() {
     const barriers = new BarriersPack(height, width, 200, 400, 
         () => progress.refreshPoints(++points))
     const bird = new Bird(height)
-
+    
     area.appendChild(progress.element)
     area.appendChild(bird.element)
     barriers.pairs.forEach(pair => area.appendChild(pair.element))
@@ -127,6 +154,10 @@ function FlappyBird() {
         const timer = setInterval(() => {
             barriers.start()
             bird.start()
+
+            if (collisionDetector(bird, barriers)) {
+                clearInterval(timer)
+            }
 
         }, 20)
     }
